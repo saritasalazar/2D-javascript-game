@@ -59,25 +59,28 @@ function draw() {
     if(x + dx > canvas.width-ballRadius || x + dx < ballRadius) {
         dx = -dx;
     }
-    if(y + dy > canvas.height-ballRadius || y + dy < ballRadius) {
-        dy = -dy;
-    }
-    
-    x += dx;
-    y += dy;
+   if(y + dy < ballRadius) {
+       dy = -dy;
+   } 
+   else if(y + dy > canvas.height-ballRadius) {
+       if(x > paddleX && x < paddleX + paddleWidth){
+           dy = -dy;
+       } 
+   else {
+    alert("GAME OVER");
+       document.location.reload();
+    clearInterval(interval);   }
+   }  
 
-    if(pressRight) {
-        paddleX += 7;
-        if (paddleX + paddleWidth > canvas.width){
-            paddleX = canvas.width - paddleWidth;
-        }
+    if(pressRight && paddleX < canvas.width-paddleWidth) {
+        paddleX +=7;
     }
-    else if(pressLeft) {
+    else if(pressLeft && paddleX > 0) {
         paddleX -= 7;
-        if (paddleX < 0){
-            paddleX = 0;
         }
+        x += dx;
+        y += dy;
     }
-}
 
-setInterval(draw, 10);
+
+let interval = setInterval(draw,10);
